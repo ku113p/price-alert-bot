@@ -72,6 +72,17 @@ func (s *CompareSign) String() string {
 	return "?"
 }
 
+func (s *CompareSign) HTML() string {
+	switch *s {
+	case moreSign:
+		return "&gt;"
+	case lessSign:
+		return "&lt;"
+	}
+
+	return "?"
+}
+
 func (s *CompareSign) When() string {
 	switch *s {
 	case moreSign:

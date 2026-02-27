@@ -108,7 +108,7 @@ func requestDeleteNotification(ctx context.Context, update *models.Update, h *he
 		return
 	}
 
-	text := fmt.Sprintf("Delete <b>%v %v $%v</b> alert?", n.Symbol, n.Sign, utils.FloatComma(n.Amount))
+	text := fmt.Sprintf("Delete <b>%v %v $%v</b> alert?", n.Symbol, n.Sign.HTML(), utils.FloatComma(n.Amount))
 	kb := view.BuildConfirmDeleteNotificationKeyboard(n)
 	h.SendMessageHTMLWithMarkup(ctx, text, kb)
 }

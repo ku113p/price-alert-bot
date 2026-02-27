@@ -101,7 +101,7 @@ func add(ctx context.Context, update *models.Update, h *helpers.TelegramRequestH
 
 	h.SendMessageHTML(ctx, fmt.Sprintf(
 		"<b>Alert created</b>\n\n%v %v $%v",
-		n.Symbol, n.Sign, utils.FloatComma(n.Amount),
+		n.Symbol, n.Sign.HTML(), utils.FloatComma(n.Amount),
 	))
 }
 
