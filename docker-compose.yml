@@ -1,0 +1,40 @@
+services:
+  app:
+    build: .
+    restart: always
+    depends_on:
+      - pgbouncer
+    env_file:
+      - .env
+    ports:
+      - "1005:8080"
+
+  db:
+    image: postgres:17.4
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dbname
+      POSTGRES_HOST_AUTH_METHOD: md5
+      POSTGRES_INITDB_ARGS: --auth=md5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  pgbouncer:
+    image: edoburu/pgbouncer
+    restart: always
+    environment:
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: dbname
+      POOL_MODE: transaction
+      MAX_CLIENT_CONN: 100
+      DEFAULT_POOL_SIZE: 20
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
