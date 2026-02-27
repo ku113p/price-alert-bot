@@ -58,6 +58,7 @@ func buildOptions(app *app.App) []bot.Option {
 	optionsCreators := []options.OptionParamsBuilder{
 		options.GetWithUserParamsCreator(app),
 		options.NewDefaultParams,
+		options.NewStartCommandParams,
 		options.NewHelpCommandParams,
 		options.NewAddCommandParams,
 		options.NewListCommandParams,

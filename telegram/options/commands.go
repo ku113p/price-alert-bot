@@ -52,6 +52,21 @@ func (builder *commandParamsBuilder) build() *commandParams {
 	}
 }
 
+func NewStartCommandParams() OptionParams {
+	return newCommandParamsBuilder().
+		withName("start").
+		withCall(start).
+		build()
+}
+
+func start(ctx context.Context, _ *models.Update, h *helpers.TelegramRequestHelper) {
+	text := "Welcome to <b>Crypto Price Alert Bot</b>!\n\n" +
+		"Get notified when a cryptocurrency reaches your target price.\n\n" +
+		"Use /add to create your first alert.\n" +
+		"Use /help to see all commands."
+	h.SendMessageHTML(ctx, text)
+}
+
 func NewHelpCommandParams() OptionParams {
 	return newCommandParamsBuilder().
 		withName("help").
