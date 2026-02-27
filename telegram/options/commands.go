@@ -6,6 +6,7 @@ import (
 	"github.com/ku113p/price-alert-bot/telegram/helpers"
 	"github.com/ku113p/price-alert-bot/telegram/services"
 	"github.com/ku113p/price-alert-bot/telegram/view"
+	"github.com/ku113p/price-alert-bot/utils"
 	"errors"
 	"fmt"
 	"strings"
@@ -59,7 +60,20 @@ func NewHelpCommandParams() OptionParams {
 }
 
 func help(ctx context.Context, _ *models.Update, h *helpers.TelegramRequestHelper) {
-	h.SendMessage(ctx, "This bot help to monitor crypto prices")
+	text := "<b>Crypto Price Alert Bot</b>\n\n" +
+		"Get notified when a cryptocurrency reaches your target price.\n\n" +
+		"<b>Commands:</b>\n" +
+		"/add <code>SYMBOL SIGN AMOUNT</code> — create a price alert\n" +
+		"/list — view your active alerts\n" +
+		"/help — show this message\n\n" +
+		"<b>Examples:</b>\n" +
+		"<code>/add BTC &gt; 100000</code> — alert when Bitcoin rises above $100,000\n" +
+		"<code>/add ETH &lt; 2000</code> — alert when Ethereum drops below $2,000\n\n" +
+		"<b>How it works:</b>\n" +
+		"1. Create an alert with /add\n" +
+		"2. The bot monitors prices in real time\n" +
+		"3. You get a notification when the price hits your target"
+	h.SendMessageHTML(ctx, text)
 }
 
 func NewAddCommandParams() OptionParams {
@@ -85,7 +99,10 @@ func add(ctx context.Context, update *models.Update, h *helpers.TelegramRequestH
 		return
 	}
 
-	h.SendMessage(ctx, fmt.Sprintf("Notification #{%s} created.", *n.ID))
+	h.SendMessageHTML(ctx, fmt.Sprintf(
+		"<b>Alert created</b>\n\n%v %v $%v",
+		n.Symbol, n.Sign, utils.FloatComma(n.Amount),
+	))
 }
 
 func NewListCommandParams() OptionParams {
@@ -102,7 +119,12 @@ func list(ctx context.Context, update *models.Update, h *helpers.TelegramRequest
 		return
 	}
 
-	text := fmt.Sprintf("You have %d Notificatins", len(ns))
+	if len(ns) == 0 {
+		h.SendMessageHTML(ctx, "You have no active alerts.\n\nUse /add to create one.")
+		return
+	}
+
+	text := fmt.Sprintf("<b>Your alerts</b> (%d)", len(ns))
 	kb := view.BuildNotificationsKeyboard(ns)
-	h.SendMessageWithMarkup(ctx, text, kb)
+	h.SendMessageHTMLWithMarkup(ctx, text, kb)
 }

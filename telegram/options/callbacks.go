@@ -76,9 +76,12 @@ func notificationInfo(ctx context.Context, update *models.Update, h *helpers.Tel
 		return
 	}
 
-	text := fmt.Sprintf("Notification\nSymbol: %v\nWhen: %v\nAmount: $%v", n.Symbol, n.Sign.When(), utils.FloatComma(n.Amount))
+	text := fmt.Sprintf(
+		"<b>%v</b> — %v <b>$%v</b>",
+		n.Symbol, n.Sign.When(), utils.FloatComma(n.Amount),
+	)
 	kb := view.BuildNotificationInfoKeyboard(n)
-	h.SendMessageWithMarkup(ctx, text, kb)
+	h.SendMessageHTMLWithMarkup(ctx, text, kb)
 }
 
 func NewRequestDeleteNotificationCallbackQueryParams() OptionParams {
@@ -105,9 +108,9 @@ func requestDeleteNotification(ctx context.Context, update *models.Update, h *he
 		return
 	}
 
-	text := fmt.Sprintf("Are you sure you want to delete this %v notification?", n.Symbol)
+	text := fmt.Sprintf("Delete <b>%v %v $%v</b> alert?", n.Symbol, n.Sign, utils.FloatComma(n.Amount))
 	kb := view.BuildConfirmDeleteNotificationKeyboard(n)
-	h.SendMessageWithMarkup(ctx, text, kb)
+	h.SendMessageHTMLWithMarkup(ctx, text, kb)
 }
 
 func NewDeleteNotificationCallbackQueryParams() OptionParams {
@@ -133,7 +136,7 @@ func deleteNotification(ctx context.Context, update *models.Update, h *helpers.T
 		return
 	}
 
-	h.SendMessage(ctx, "Notification deleted")
+	h.SendMessage(ctx, "Alert deleted.")
 }
 
 func NewDeleteMessageCallbackQueryParams() OptionParams {

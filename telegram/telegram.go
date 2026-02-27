@@ -100,12 +100,12 @@ func SendNotification(ctx context.Context, n *models.Notification, app *app.App)
 
 	helper := helpers.NewTelegramRequestHelper(bot, user, app)
 	text := fmt.Sprintf(
-		"Signal!\n%v %v $%v",
+		"<b>%v %v $%v</b>",
 		n.Symbol,
 		n.Sign.When(),
 		utils.FloatComma(n.Amount),
 	)
-	helper.SendMessage(ctx, text)
+	helper.SendMessageHTML(ctx, text)
 
 	return nil
 }

@@ -2,6 +2,7 @@ package view
 
 import (
 	"github.com/ku113p/price-alert-bot/models"
+	"github.com/ku113p/price-alert-bot/utils"
 	"fmt"
 
 	telegramModels "github.com/go-telegram/bot/models"
@@ -12,7 +13,7 @@ func BuildNotificationsKeyboard(ns []*models.Notification) *telegramModels.Inlin
 	for _, n := range ns {
 		row := []telegramModels.InlineKeyboardButton{
 			{
-				Text:         fmt.Sprintf("%v %s $%v", n.Symbol, n.Sign, n.Amount),
+				Text:         fmt.Sprintf("%v %s $%v", n.Symbol, n.Sign, utils.FloatComma(n.Amount)),
 				CallbackData: fmt.Sprintf("n_%v", n.ID.String()),
 			},
 		}

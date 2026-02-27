@@ -32,6 +32,27 @@ func (h *TelegramRequestHelper) SendMessage(ctx context.Context, text string) {
 	h.logErrorIfNeed(err)
 }
 
+func (h *TelegramRequestHelper) SendMessageHTML(ctx context.Context, text string) {
+	_, err := h.bot.SendMessage(ctx, &bot.SendMessageParams{
+		ChatID:    *h.User.TelegramChatID,
+		Text:      text,
+		ParseMode: telegramModels.ParseModeHTML,
+	})
+
+	h.logErrorIfNeed(err)
+}
+
+func (h *TelegramRequestHelper) SendMessageHTMLWithMarkup(ctx context.Context, text string, kb telegramModels.ReplyMarkup) {
+	_, err := h.bot.SendMessage(ctx, &bot.SendMessageParams{
+		ChatID:      *h.User.TelegramChatID,
+		Text:        text,
+		ParseMode:   telegramModels.ParseModeHTML,
+		ReplyMarkup: kb,
+	})
+
+	h.logErrorIfNeed(err)
+}
+
 func (h *TelegramRequestHelper) logErrorIfNeed(err error) {
 	if err != nil {
 		h.Logger.Error("failed send message", "error", err)

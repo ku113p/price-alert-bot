@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/ku113p/price-alert-bot/telegram/handlers"
 	"github.com/ku113p/price-alert-bot/telegram/helpers"
-	"fmt"
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
@@ -22,6 +21,6 @@ func NewDefaultParams() OptionParams {
 
 func defaultEcho(ctx context.Context, update *models.Update, h *helpers.TelegramRequestHelper) {
 	if update.Message != nil {
-		h.SendMessage(ctx, fmt.Sprintf("%#v", h.User))
+		h.SendMessage(ctx, "Unknown command. Use /help to see available commands.")
 	}
 }

@@ -75,9 +75,9 @@ func (s *CompareSign) String() string {
 func (s *CompareSign) When() string {
 	switch *s {
 	case moreSign:
-		return "Got bigger"
+		return "rises above"
 	case lessSign:
-		return "Got smaller"
+		return "drops below"
 	}
 
 	return "?"
